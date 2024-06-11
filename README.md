@@ -9,7 +9,7 @@ A repository for sharing code developed with ResearchSpace from web components, 
 * create CI pipeline for contrib packages
 
 
-##WIP -- APP Mechanism###
+## WIP -- APP Mechanism##
 
 The platform offers simple extension points to build, bundle and deploy lightweight "apps" along with the platform without the need of changing the platform binary or re-compiling the platform.
 Sources of an "app" can be put under the source control and a packaged version of an "app" can be deployed as a docker container volume along with the platform.
