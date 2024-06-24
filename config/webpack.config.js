@@ -1,6 +1,7 @@
 const path = require('path');
+const CopyPlugin = require('copy-webpack-plugin');
 
-const { SRC, DIST, TS_CONFIG_FILE, EXTENSION_NAME } = require('./defaults');
+const { ROOT_DIR, SRC, DIST, TS_CONFIG_FILE, EXTENSION_NAME } = require('./defaults');
 
 module.exports = {
     entry: path.join(SRC, 'index.ts'),
@@ -31,5 +32,14 @@ module.exports = {
             },
         ],
     },
-    plugins: [],
+    plugins: [
+        new CopyPlugin({
+            patterns: [
+                {
+                    from: path.join(ROOT_DIR, 'components.json'),
+                    to: path.join(ROOT_DIR, 'assets/components.json')
+                },
+            ],
+        }),
+    ],
 };

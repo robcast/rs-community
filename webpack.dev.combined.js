@@ -1,18 +1,19 @@
 const path = require('path');
+const fs = require('fs');
 
-const PROJECTS = ['./plugins/sample_plugin', './plugins/sample_plugin_2'];
+// Read the projects.json file
+const projectsFilePath = path.resolve(__dirname, 'projects.json');
+const PROJECTS = JSON.parse(fs.readFileSync(projectsFilePath, 'utf8'));
 
 // Load webpack configurations from specified project folders
-const configs =
-      PROJECTS.map((projectFolder) => {
-          // Construct path to webpack.config.js within the project folder
-          const configPath = path.resolve(projectFolder, 'webpack.dev.config.js');
-          const config = require(configPath);
+const configs = PROJECTS.map((projectFolder) => {
+    const configPath = path.resolve(projectFolder, 'webpack.dev.config.js');
+    const config = require(configPath);
 
-          config.mode = 'development';
-          config.output.pathinfo = false;
+    config.mode = 'development';
+    config.output.pathinfo = false;
 
-          return config;
+    return config;
 });
 
 configs[0].devServer = {
@@ -28,6 +29,9 @@ configs[0].devServer = {
             runtimeErrors: false,
         },
     },
+    devMiddleware: {
+        writeToDisk: (filePath) => filePath.endsWith('components.json'),
+    }
 };
 
 module.exports = configs;

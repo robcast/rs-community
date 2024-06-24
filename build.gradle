@@ -1,6 +1,6 @@
 import java.util.regex.Pattern
 import java.util.regex.Matcher
-
+import groovy.json.JsonOutput
 
 plugins {
     // To run webpack-dev-server in the background
@@ -29,6 +29,8 @@ subprojects {
 
     task generateBuildConfig {
         doLast {
+            mkdir "${projectDir}/assets"
+
             // generate tsconfig.json for every plugin
             replaceInTemplate(
                 "${rootDir}/config/tsconfig.json",
@@ -85,8 +87,16 @@ if (project == gradle.rootProject) {
     // define custom tasks exclusive to the root project
 
 
+    task generateProjectsConfig {
+        doLast {
+            def projectsJson = JsonOutput.toJson(subprojects.collect { "./plugins/${it.name}"})
+            file("${rootDir}/projects.json").text = projectsJson
+        }
+    }
+
     // task to execute webpack in watch mode, see ./package.json
     task startWebpack(type: com.github.psxpaul.task.ExecFork) {
+        dependsOn generateProjectsConfig
         subprojects.each { dependsOn("${it.name}:generateBuildConfig") }
 
         executable = 'npm'

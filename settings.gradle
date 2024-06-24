@@ -1,10 +1,12 @@
 rootProject.name = 'researchspace-community'
 
-new File(rootDir, 'plugins').eachDir {dir ->
-    if (new File(dir, 'build.gradle').exists())
-    {
-        include dir.name
-        project(":${dir.name}").projectDir = file("plugins/${dir.name}")
+def specifiedProjects = gradle.startParameter.projectProperties['_projects']?.split(',')
+
+new File(rootDir, 'plugins').eachDir { dir ->
+    if (new File(dir, 'build.gradle').exists()) {
+        if (specifiedProjects == null || specifiedProjects.contains(dir.name)) {
+            include dir.name
+            project(":${dir.name}").projectDir = file("plugins/${dir.name}")
+        }
     }
 }
-
