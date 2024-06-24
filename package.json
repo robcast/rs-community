@@ -1,0 +1,16 @@
+{
+    "scripts": {
+        "dev": "webpack-dev-server --config webpack.dev.combined.js"
+    },
+    "devDependencies": {
+        "@module-federation/enhanced": "0.1.20",
+        "@module-federation/native-federation-typescript": "0.4.4",
+        "fork-ts-checker-webpack-plugin": "9.0.2",
+        "ts-loader": "9.5.1",
+        "tslib": "2.6.2",
+        "typescript": "5.4.5",
+        "webpack": "5.92.1",
+        "webpack-cli": "5.1.4",
+        "webpack-dev-server": "5.0.4"
+    }
+}

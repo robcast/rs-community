@@ -1,0 +1,7 @@
+#build specific
+.gradle
+build
+node_modules/
+.log
+dist/
+assets/

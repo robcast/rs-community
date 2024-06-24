@@ -1,0 +1,48 @@
+{
+    "version": "2.0.0",
+    "compilerOptions": {
+        "baseUrl": ".",
+        "paths": {
+            "platform/app/*": [
+                "/home/artem/new-work/projects/pharos/github/researchspace/build/ts/main/web/app/*"
+            ],
+            "platform/api/*": [
+                "/home/artem/new-work/projects/pharos/github/researchspace/build/ts/main/web/api/*"
+            ],
+            "platform/components/*": [
+                "/home/artem/new-work/projects/pharos/github/researchspace/build/ts/main/web/components/*"
+            ],
+            "platform/*": [
+                "/home/artem/new-work/projects/pharos/github/researchspace/build/ts/web/*"
+            ],
+            "typings/*": [
+                "/home/artem/new-work/projects/pharos/github/researchspace/typings/*"
+            ]
+        },
+        "typeRoots": [
+            "./node_modules/@types/",
+            "/home/artem/new-work/projects/pharos/github/researchspace/node_modules/@types/"
+        ],
+        "target": "es6",
+        "module": "esnext",
+        "allowSyntheticDefaultImports": true,
+        "moduleResolution": "node",
+        "declaration": false,
+        "removeComments": true,
+        "noImplicitAny": true,
+        "lib": [
+            "dom",
+            "es6"
+        ],
+        "preserveConstEnums": true,
+        "importHelpers": true,
+        "jsx": "react",
+        "sourceMap": true,
+        "skipLibCheck": true,
+    },
+    "include": [
+        "src/main/web/**/*",
+        "src/test/web/**/*",
+        "/home/artem/new-work/projects/pharos/github/researchspace/typings/**/*"
+    ]
+}

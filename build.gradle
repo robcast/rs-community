@@ -1,0 +1,100 @@
+import java.util.regex.Pattern
+import java.util.regex.Matcher
+
+
+plugins {
+    // To run webpack-dev-server in the background
+    id 'com.github.psxpaul.execfork' version '0.2.2'
+}
+
+def replaceInTemplate(String templateFile, String destinationPath, Map<String, String> replacements) {
+    def content = file(templateFile).text
+    replacements.each { placeholder, newValue ->
+        def escapedPlaceholder = Pattern.quote("[[" + placeholder + "]]")
+        content = content.replaceAll(escapedPlaceholder, Matcher.quoteReplacement(newValue))
+    }
+    file(destinationPath).text = content
+}
+
+subprojects {
+    task clean {
+        delete "${projectDir}/assets"
+        delete "${projectDir}/node_modules"
+    }
+
+    task npmInstall(type: Exec) {
+        executable 'npm'
+        args 'i', '--no-audit', '--no-fund', '--loglevel=error'
+    }
+
+    task generateBuildConfig {
+        doLast {
+            // generate tsconfig.json for every plugin
+            replaceInTemplate(
+                "${rootDir}/config/tsconfig.json",
+                "${projectDir}/tsconfig.json",
+                ['rsDir': project.properties['rsDir']]
+            )
+
+            // generate webpack config, we do this only if there are custom components
+            def componentsFile = file("${projectDir}/components.json");
+            if (componentsFile.exists()) {
+                // generate defaults.js
+                replaceInTemplate(
+                    "${rootDir}/config/defaults.js",
+                    "${projectDir}/defaults.js",
+                    [
+                        'extensionName': project.name,
+                        'rsDir': project.properties['rsDir']
+                    ]
+                )
+
+                // generate webpack.config.js
+                replaceInTemplate(
+                    "${rootDir}/config/webpack.config.js",
+                    "${projectDir}/webpack.config.js",
+                    [:]
+                )
+
+                // generate webpack.dev.config.js
+                replaceInTemplate(
+                    "${rootDir}/config/webpack.dev.config.js",
+                    "${projectDir}/webpack.dev.config.js",
+                    [:]
+                )
+
+                // generate webpack.dev.config.js
+                replaceInTemplate(
+                    "${rootDir}/config/webpack.prod.config.js",
+                    "${projectDir}/webpack.prod.config.js",
+                    [:]
+                )
+            }
+        }
+    }
+    tasks.generateBuildConfig.dependsOn npmInstall
+
+    task webpackProd(type: Exec) {
+        executable 'npx'
+        args 'webpack', '--bail', '--mode', 'production', '--config', "${projectDir}/webpack.prod.config.js"
+    }
+    tasks.webpackProd.dependsOn generateBuildConfig
+}
+
+if (project == gradle.rootProject) {
+    // define custom tasks exclusive to the root project
+
+
+    // task to execute webpack in watch mode, see ./package.json
+    task startWebpack(type: com.github.psxpaul.task.ExecFork) {
+        subprojects.each { dependsOn("${it.name}:generateBuildConfig") }
+
+        executable = 'npm'
+        args = [ 'run', 'dev' ]
+        timeout = Long.MAX_VALUE
+        forceKill = true
+
+        // wait for message produces by webpack in minimal log mode
+        waitForOutput = 'never happaens'
+    }
+}

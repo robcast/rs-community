@@ -1,0 +1,7 @@
+{
+    "name": "sample_plugin_2",
+    "scripts": {
+        "typescript": "tsc -p tsconfig.json --noEmit --watch"
+    },
+    "private": true
+}

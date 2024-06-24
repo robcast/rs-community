@@ -1,0 +1,3 @@
+{
+    "my-custom-component": "./src/main/web/CustomComponent.tsx"
+}

@@ -1,0 +1,14 @@
+{
+    "name": "sample_plugin",
+    "scripts": {
+        "prod": "webpack --bail --mode development --config webpack.config.js",
+        "typescript": "../node_modules/.bin/tsc -p tsconfig.json --noEmit --watch"
+    },
+    "devDependencies": {
+        "@types/underscore": "^1.11.15"
+    },
+    "private": true,
+    "dependencies": {
+        "underscore": "^1.13.6"
+    }
+}
