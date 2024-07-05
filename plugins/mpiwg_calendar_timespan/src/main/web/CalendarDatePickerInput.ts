@@ -37,10 +37,10 @@ import indian_en from 'react-date-object/locales/indian_en';
 
 import { Rdf, vocabularies, XsdDataTypeValidation } from 'platform/api/rdf';
 
-import { FieldDefinition, getPreferredLabel } from 'platform/components/forms/FieldDefinition';
-import { FieldValue, AtomicValue, EmptyValue } from 'platform/components/forms/FieldValues';
-import { SingleValueInput, AtomicValueInput, AtomicValueInputProps } from 'platform/components/forms/inputs/SingleValueInput';
-import { ValidationMessages } from 'platform/components/forms/inputs/Decorations';
+import { FieldDefinition, getPreferredLabel } from 'platform/components/forms';
+import { FieldValue, AtomicValue, EmptyValue } from 'platform/components/forms';
+import { SingleValueInput, AtomicValueInput, AtomicValueInputProps } from 'platform/components/forms/inputs';
+import { ValidationMessages } from 'platform/components/forms/inputs';
 
 //import './calendardate.scss';
 
@@ -208,7 +208,7 @@ export class CalendarDatePickerInput extends AtomicValueInput<CalendarDatePicker
     } else if (typeof value === 'string') {
       // if user enter a string without using the date picker
       // we pass directly to validation 
-      // TODO: convert to gregorian? 
+      // TODO: convert from calendar to gregorian?
       parsed = this.parse(value);
     } else {
       // assume value is date object and convert to gregorian calendar
@@ -221,7 +221,6 @@ export class CalendarDatePickerInput extends AtomicValueInput<CalendarDatePicker
           calendarDate.toLastOfYear();
         }
       }
-      //const isoDate = calendarDate.convert(GregorianCalendar).format(ISO_DATE_FORMAT);
       const isoDate = calendarDate.convert(gregorian).format(ISO_DATE_FORMAT);
       parsed = this.parse(isoDate);
     }
@@ -265,7 +264,9 @@ export function dateObjectFromRdfLiteral(literal: Rdf.Literal | undefined): Date
 }
 
 function defaultPlaceholder(definition: FieldDefinition, mode: DatePickerMode) {
-  const fieldName = (getPreferredLabel(definition.label) || mode).toLocaleLowerCase();
+  // getPreferredLabel breaks with config not initialized
+  //const fieldName = (getPreferredLabel(definition.label) || mode).toLocaleLowerCase();
+  const fieldName = definition.label[0].value || mode
   return `Select or enter ${fieldName} here...`;
 }
 
