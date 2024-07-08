@@ -9,8 +9,5 @@
     "private": true,
     "dependencies": {
       "react-multi-date-picker": "^3.3.4"
-    },
-    "overrides": {
-      "react-date-object": "npm:@robcast/react-date-object@^2.1.11"
     }
 }

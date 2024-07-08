@@ -1,3 +1,4 @@
 {
-  "mpiwg-calendardate-input": "./src/main/web/CalendarDatePickerInput.ts"
+  "mpiwg-calendardate-input": "./src/main/web/CalendarDatePickerInput.ts",
+  "mpiwg-composite-timespan-input": "./src/main/web/CompositeTimespanInput.ts"
 }
